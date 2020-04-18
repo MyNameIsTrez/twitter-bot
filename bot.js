@@ -25,8 +25,6 @@ function getTweetText(text) {
 	return 'write(\'' + inside + '\')';
 }
 
-let ignoreCount = 0;
-
 function parseTweet(tweet) {
 	// console.log(tweet)
 
@@ -35,10 +33,7 @@ function parseTweet(tweet) {
 		!IDs.includes(tweet.user.id_str) ||
 		(tweet.retweeted_status !== null && tweet.retweeted_status !== undefined)
 	) {
-		console.log('Ignore count: ' + ++ignoreCount);
 		return;
-	} else {
-		ignoreCount = 0;
 	}
 
 	const tweetText = getTweetText(tweet.text);
@@ -58,6 +53,8 @@ function parseTweet(tweet) {
 			// console.log(response)
 		}
 	})
+
+	console.log('Waiting on tweet...')
 }
 
 stream.on('tweet', tweet => {
@@ -71,6 +68,7 @@ stream.on('disconnect', function (disconn) {
 
 stream.on('connect', function (conn) {
 	console.log('Connecting')
+	console.log('Waiting on tweet...')
 })
 
 stream.on('reconnect', function (reconn, res, interval) {
